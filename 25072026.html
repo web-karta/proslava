@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Pića i Torte</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .menu-buttons {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .menu-btn {
+            flex: 1;
+            min-width: 140px;
+            height: 200px;
+            border: none;
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .menu-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-btn span {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #picaBtn {
+            background-image: url('https://ip.index.hr/remote/bucket.index.hr/b/index/038b2ba2-8c2e-409b-a83e-d35a7eff46eb.png?width=480&height=480');
+        }
+
+        #torteBtn {
+            background-image: url('https://skmer.hr/wp-content/uploads/2022/08/Imotska-torta-2018-Imotski-SKMER0017-1.jpg?w=400&h=300&fit=crop');
+        }
+
+        .menu-content {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            margin: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-content.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .item-list {
+            list-style: none;
+            padding-left: 15px;
+        }
+
+        .item-list li {
+            padding: 10px 0;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .item-list li:last-child {
+            border-bottom: none;
+        }
+
+        .item-list li:hover {
+            background: #f9f9f9;
+            padding-left: 10px;
+            color: #667eea;
+        }
+
+        .item-list li::before {
+            content: '▸ ';
+            color: #764ba2;
+            margin-right: 8px;
+        }
+
+        .close-btn {
+            background: #764ba2;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .close-btn:active {
+            background: #667eea;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 22px;
+            }
+
+            .menu-buttons {
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .menu-btn {
+                height: 160px;
+                font-size: 20px;
+                min-width: 120px;
+            }
+
+            .menu-content {
+                margin: 15px;
+                padding: 15px;
+            }
+
+            .category-title {
+                font-size: 16px;
+            }
+
+            .item-list li {
+                font-size: 14px;
+                padding: 8px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍹 Meni 🎂</h1>
+            <p>Odaberite kategoriju</p>
+        </header>
+
+        <div class="menu-buttons">
+            <button class="menu-btn" id="picaBtn">
+                <span>🍹 PIĆA</span>
+            </button>
+            <button class="menu-btn" id="torteBtn">
+                <span>🎂 TORTE</span>
+            </button>
+        </div>
+
+        <div id="picaContent" class="menu-content">
+            <div class="category">
+                <div class="category-title">GAZIRANA PIĆA</div>
+                <ul class="item-list">
+                    <li>Cockta</li>
+                    <li>Coca Cola</li>
+                    <li>Sprite</li>
+                    <li>Fanta</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title">NEGAZIRANA PIĆA</div>
+                <ul class="item-list">
+                    <li>Ledeni čaj</li>
+                    <li>Voda</li>
+                    <li>Voćni sokovi</li>
+                    <li>Limunada</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title">ALKOHOLNA PIĆA</div>
+                <ul class="item-list">
+                    <li>Vino - crveno</li>
+                    <li>Vino - bijelo</li>
+                    <li>Pivo</li>
+                    <li>Rakija</li>
+                </ul>
+            </div>
+
+            <button class="close-btn" onclick="closeMenu()">Nazad</button>
+        </div>
+
+        <div id="torteContent" class="menu-content">
+            <div class="category">
+                <div class="category-title">SUHE TORTE</div>
+                <ul class="item-list">
+                    <li>Imotska torta</li>
+                    <li>Čokoladna torta</li>
+                    <li>Maraschino torta</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title">VOĆNE TORTE</div>
+                <ul class="item-list">
+                    <li>Ledeni vjetar</li>
+                    <li>Jagodna torta</li>
+                    <li>Malinina torta</li>
+                    <li>Banana split torta</li>
+                </ul>
+            </div>
+
+            <div class="category">
+                <div class="category-title">KREME TORTE</div>
+                <ul class="item-list">
+                    <li>Profiterol</li>
+                    <li>Ekler</li>
+                    <li>Krempita</li>
+                </ul>
+            </div>
+
+            <button class="close-btn" onclick="closeMenu()">Nazad</button>
+        </div>
+    </div>
+
+    <script>
+        const picaBtn = document.getElementById('picaBtn');
+        const torteBtn = document.getElementById('torteBtn');
+        const picaContent = document.getElementById('picaContent');
+        const torteContent = document.getElementById('torteContent');
+
+        picaBtn.addEventListener('click', () => {
+            picaContent.classList.add('active');
+            torteContent.classList.remove('active');
+        });
+
+        torteBtn.addEventListener('click', () => {
+            torteContent.classList.add('active');
+            picaContent.classList.remove('active');
+        });
+
+        function closeMenu() {
+            picaContent.classList.remove('active');
+            torteContent.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
